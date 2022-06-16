@@ -39,7 +39,8 @@ def move():
     logger.info(j)
     logger.info(request.json)
     logger.info('testing')
-    return moves[random.randrange(len(moves))]
+    #return moves[random.randrange(len(moves))]
+    return j
 
 if __name__ == "__main__":
   app.run(debug=False,host='0.0.0.0',port=int(os.environ.get('PORT', 8080)))
