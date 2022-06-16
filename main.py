@@ -25,8 +25,6 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 moves = ['F', 'T', 'L', 'R']
 
-def goto
-
 
 @app.route("/", methods=['GET'])
 def index():
