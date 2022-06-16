@@ -55,6 +55,7 @@ def printPlayerList(playerList):
 
 def attackOrFindPlayer(maxX, maxY, selfInfo, playerList):
 
+
     return 'F'
 
     
@@ -182,15 +183,27 @@ def escape(maxX, maxY, selfInfo, playerList):
                 rear = coordination(targetX, targetY)
                 rearCoordinationArr.append(rear)
     
+    #Debug
+    for f in frontCoordinationArr:
+        logger.info('Front=['+str(f.x)+','+str(f.y)+']')
+    for l in leftCoordinationArr:
+        logger.info('Left=['+str(l.x)+','+str(l.y)+']')
+    for r in rightCoordinationArr:
+        logger.info('Right=['+str(r.x)+','+str(r.y)+']')
+
+
+
+
     #1. If no player or Boundary in front (up to throwRange + 1 )
     #   => go forward
     
-    frontHasPlayer = False   
+    frontHasPlayer = False
+    frontIsBoundary = False
     if len(frontCoordinationArr) == throwRange+1: 
         for f in frontCoordinationArr:
             logger.info('Front=['+str(f.x)+','+str(f.y)+']')
             for pUrl,pInfo in playerList.items():
-                if checkX==pInfo.x and checkY==pInfo.y:
+                if f.x==pInfo.x and f.x==pInfo.y:
                     frontHasPlayer = True
                     logger.info("Player find in front:"+pUrl)
                     break
@@ -198,19 +211,22 @@ def escape(maxX, maxY, selfInfo, playerList):
                 break
     else:
         logger.info("Boundary in front")
+        frontIsBoundary =True
 
-    if not frontHasPlayer:    
+    if not frontHasPlayer and not frontIsBoundary:
+        logger.info("escape: move F")    
         return 'F'
 
     #2. else (i.e. player in front)
     #  2.1 if no player and Boundary on Left (up to throwRange + 1)
     #      => go Left    
     LeftHasPlayer = False    
-    if len(frontCoordinationArr) == throwRange+1: 
-        for f in leftCoordinationArr:
+    leftIsBoundary = False
+    if len(leftCoordinationArr) == throwRange+1: 
+        for l in leftCoordinationArr:
             logger.info('Left=['+str(l.x)+','+str(l.y)+']')
             for pUrl,pInfo in playerList.items():
-                if checkX==pInfo.x and checkY==pInfo.y:
+                if l.x==pInfo.x and l.y==pInfo.y:
                     LeftHasPlayer = True
                     logger.info("Player find in left:"+pUrl)
                     break
@@ -218,19 +234,22 @@ def escape(maxX, maxY, selfInfo, playerList):
                 break
     else:
         logger.info("Boundary in left")
+        leftIsBoundary = True
 
-    if not LeftHasPlayer:    
+    if not LeftHasPlayer and not leftIsBoundary: 
+        logger.info("escape: move L")   
         return 'L'
     
     #  2.2 if no player and Boundary on Right (up to throwRange +1 )
     #       => go Right
     
     RightHasPlayer = False    
-    if len(frontCoordinationArr) == throwRange+1: 
-        for f in rightCoordinationArr:
-            logger.info('Right=['+str(l.x)+','+str(l.y)+']')
+    rightIsBoundary = False
+    if len(rightCoordinationArr) == throwRange+1: 
+        for r in rightCoordinationArr:
+            logger.info('Right=['+str(r.x)+','+str(r.y)+']')
             for pUrl,pInfo in playerList.items():
-                if checkX==pInfo.x and checkY==pInfo.y:
+                if r.x==pInfo.x and r.x==pInfo.y:
                     RightHasPlayer = True
                     logger.info("Player find in right:"+pUrl)
                     break
@@ -238,12 +257,15 @@ def escape(maxX, maxY, selfInfo, playerList):
                 break
     else:
         logger.info("Boundary in right")
+        rightIsBoundary = True
 
-    if not LeftHasPlayer:    
+    if not RightHasPlayer and not rightIsBoundary:
+        logger.info("escape: move R")   
         return 'R'
 
     #       else (i.e. no way go )
     #       => random one move 
+    logger.info("escape: move random")
     return moves[random.randrange(len(moves))] 
 
 
