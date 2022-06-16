@@ -16,7 +16,7 @@
 import os
 import logging
 import random
-#import json
+import json
 from flask import Flask, request
 
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
@@ -33,7 +33,7 @@ def index():
 @app.route("/", methods=['POST'])
 def move():
     request.get_data()
-    #j = json.loads(request.json)
+    j = json.loads(request.json)
     #logger.info(j)
     logger.info(request.json)
     logger.info('testing')
