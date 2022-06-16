@@ -34,7 +34,7 @@ def index():
 def move():
     request.get_data()
     j = json.loads(request.json)
-    #logger.info(j)
+    logger.info(j['_links'])
     logger.info(request.json)
     logger.info('testing')
     #return moves[random.randrange(len(moves))]
