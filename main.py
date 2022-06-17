@@ -335,7 +335,7 @@ def getTargetedMeAttacker(maxX, maxY, selfInfo, playerList):
 #Set of action
 #############
 
-def findBetterPlace(maxX, maxY, selfInfo, playerList):
+def findBetterPlace(maxX, maxY, selfInfo, playerList, targetedMeAttackerList):
     ###Logic=> Prevent targetted by multiple player, still intend to atack
     #Assuming have more than one 
 
@@ -360,7 +360,7 @@ def findBetterPlace(maxX, maxY, selfInfo, playerList):
     if len(frontCoordinationArr) == throwRange+1: 
         for f in frontCoordinationArr:
             logger.info('Front=['+str(f.x)+','+str(f.y)+']')
-            for pUrl,pInfo in playerList.items():
+            for pUrl,pInfo in targetedMeAttackerList.items():
                 if f.x==pInfo.x and f.y==pInfo.y:
                     frontHasPlayer = True
                     logger.info("Player find in front:"+pUrl)
@@ -384,7 +384,7 @@ def findBetterPlace(maxX, maxY, selfInfo, playerList):
     if len(leftCoordinationArr) == throwRange+1: 
         for l in leftCoordinationArr:
             logger.info('Left=['+str(l.x)+','+str(l.y)+']')
-            for pUrl,pInfo in playerList.items():
+            for pUrl,pInfo in targetedMeAttackerList.items():
                 if l.x==pInfo.x and l.y==pInfo.y:
                     LeftHasPlayer = True
                     logger.info("Player find in left:"+pUrl)
@@ -408,7 +408,7 @@ def findBetterPlace(maxX, maxY, selfInfo, playerList):
     if len(rightCoordinationArr) == throwRange+1: 
         for r in rightCoordinationArr:
             logger.info('Right=['+str(r.x)+','+str(r.y)+']')
-            for pUrl,pInfo in playerList.items():
+            for pUrl,pInfo in targetedMeAttackerList.items():
                 if r.x==pInfo.x and r.y==pInfo.y:
                     RightHasPlayer = True
                     logger.info("Player find in right:"+pUrl)
@@ -446,13 +446,13 @@ def findBetterPlaceAndAttack(maxX, maxY, selfInfo, playerList):
 
     if selfInfo.wasHit:
         logger.info("(findBetterPlaceAndAttack) xxxx Was Hit by someone, find Better Place!!!.")
-        return findBetterPlace(maxX, maxY, selfInfo, playerList)
+        return findBetterPlace(maxX, maxY, selfInfo, playerList, targetedMeAttackerList)
 
 
     # 1. if more than 1 player targeted 
     if len(targetedMeAttackerList) > 1: 
         logger.info("(findBetterPlaceAndAttack) xxxx Targeted by more than 1 player xxxx, find Better Place!!!.")
-        return findBetterPlace(maxX, maxY, selfInfo, playerList)
+        return findBetterPlace(maxX, maxY, selfInfo, playerList, targetedMeAttackerList)
 
     # 13:30 prvenvt dead lock with attacher 
     #if len(targetedMeAttackerList) == 1:
