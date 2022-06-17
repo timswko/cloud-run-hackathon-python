@@ -423,10 +423,11 @@ def findBetterPlace(maxX, maxY, selfInfo, playerList, targetedMeAttackerList):
         logger.info("(findBetterPlace) move R")   
         return 'R'
 
-    #       else (i.e. no way go )
-    #       => random one move 
-    logger.info("(findBetterPlace) move random")
-    return moves[random.randrange(len(moves))] 
+    logger.info("(findBetterPlace) only can go rear, return 'R'")
+    return 'R'
+
+    #logger.info("(findBetterPlace) move random")
+    #return moves[random.randrange(len(moves))] 
 
 
 #############
