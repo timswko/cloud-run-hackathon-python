@@ -433,7 +433,7 @@ def findBetterPlace(maxX, maxY, selfInfo, playerList):
 #Strategy 
 #############
 
-def findBestPlaceAndAttack(maxX, maxY, selfInfo, playerList):
+def findBetterPlaceAndAttack(maxX, maxY, selfInfo, playerList):
     # 1. if more than 1 player targeted 
     #  => escape 
     # 2. if only 1 player targeted
@@ -444,19 +444,24 @@ def findBestPlaceAndAttack(maxX, maxY, selfInfo, playerList):
     for aUrl,aInfo in targetedMeAttackerList.items():
         logger.info("Attacker found: "+aUrl)
 
+    if selfInfo.wasHit:
+        logger.info("(findBetterPlaceAndAttack) xxxx Was Hit by someone, find Better Place!!!.")
+        return findBetterPlace(maxX, maxY, selfInfo, playerList)
+
+
     # 1. if more than 1 player targeted 
     if len(targetedMeAttackerList) > 1: 
-        logger.info("(findBestPlaceAndAttack) xxxx Targeted by more than 1 player xxxx, find Better Place!!!.")
+        logger.info("(findBetterPlaceAndAttack) xxxx Targeted by more than 1 player xxxx, find Better Place!!!.")
         return findBetterPlace(maxX, maxY, selfInfo, playerList)
 
     # 13:30 prvenvt dead lock with attacher 
     #if len(targetedMeAttackerList) == 1:
     #    #face to attacker
-    #    logger.info("(findBestPlaceAndAttack) Targeted by only 1 player , face to attacker!!! ")
+    #    logger.info("(findBetterPlaceAndAttack) Targeted by only 1 player , face to attacker!!! ")
     #    return faceToAttacker(maxX, maxY, selfInfo, playerList, targetedMeAttackerList)
 
 
-    logger.info("(findBestPlaceAndAttack) NOT BEING TARGETED, GO ATTACK!!!!")
+    logger.info("(findBetterPlaceAndAttack) NOT BEING TARGETED, GO ATTACK!!!!")
     return attackOrFindPlayer(maxX, maxY, selfInfo, playerList)
 
 def attackOrFindPlayer(maxX, maxY, selfInfo, playerList):
@@ -752,10 +757,10 @@ def main():
     
 
     #############
-    # 2 - findBestPlaceAndAttack()
+    # 2 - findBetterPlaceAndAttack()
     ###############
     
-    return findBestPlaceAndAttack(maxX, maxY, selfInfo, playerList)
+    return findBetterPlaceAndAttack(maxX, maxY, selfInfo, playerList)
 
 
     
