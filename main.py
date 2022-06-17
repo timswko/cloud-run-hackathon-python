@@ -449,10 +449,12 @@ def findBestPlaceAndAttack(maxX, maxY, selfInfo, playerList):
         logger.info("(findBestPlaceAndAttack) xxxx Targeted by more than 1 player xxxx, find Better Place!!!.")
         return findBetterPlace(maxX, maxY, selfInfo, playerList)
 
-    if len(targetedMeAttackerList) == 1:
-        #face to attacker
-        logger.info("(findBestPlaceAndAttack) Targeted by only 1 player , face to attacker!!! ")
-        return faceToAttacker(maxX, maxY, selfInfo, playerList, targetedMeAttackerList)
+    # 13:30 prvenvt dead lock with attacher 
+    #if len(targetedMeAttackerList) == 1:
+    #    #face to attacker
+    #    logger.info("(findBestPlaceAndAttack) Targeted by only 1 player , face to attacker!!! ")
+    #    return faceToAttacker(maxX, maxY, selfInfo, playerList, targetedMeAttackerList)
+
 
     logger.info("(findBestPlaceAndAttack) NOT BEING TARGETED, GO ATTACK!!!!")
     return attackOrFindPlayer(maxX, maxY, selfInfo, playerList)
