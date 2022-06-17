@@ -691,7 +691,7 @@ def faceToAttacker(maxX, maxY, selfInfo, playerList, targetedMeAttackerList):
 
 @app.route("/", methods=['GET'])
 def index():
-    return "Balance mode!"
+    return "Balance!"
 
 @app.route("/", methods=['POST'])
 def main():
