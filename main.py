@@ -540,7 +540,7 @@ def findBetterPlaceAndAttack(maxX, maxY, selfInfo, playerList):
     # 2. if no one targeted
     #  => attackOrFindPlayer  
     targetedMeAttackerList = getTargetedMeAttacker(maxX, maxY, selfInfo, playerList)
-    for aUrl,aInfo in targetedMeAttackerList.items()
+    for aUrl,aInfo in targetedMeAttackerList.items():
         logger.info("Attacker found: "+aUrl)
 
     if selfInfo.wasHit:
