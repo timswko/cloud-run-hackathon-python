@@ -798,7 +798,7 @@ def faceToAttacker(maxX, maxY, selfInfo, playerList, targetedMeAttackerList):
 @app.route("/", methods=['GET'])
 def index():
     #return "RANDOM!!!"
-    return "Balancev1!"
+    return "Balancev2!"
     
 
 @app.route("/", methods=['POST'])
