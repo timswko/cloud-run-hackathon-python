@@ -352,7 +352,8 @@ def escape(maxX, maxY, selfInfo, playerList, targetedMeAttackerList):
     #       else (i.e. no way go )
     #       => random one step 
     
-    nearbyCoordination = findNearbyCoordination(maxX, maxY, selfInfo.direction, selfInfo.x, selfInfo.y , throwRange+1)
+    #nearbyCoordination = findNearbyCoordination(maxX, maxY, selfInfo.direction, selfInfo.x, selfInfo.y , throwRange+1)
+    nearbyCoordination = findNearbyCoordination(maxX, maxY, selfInfo.direction, selfInfo.x, selfInfo.y , 1)
 
     #1. If no player or Boundary in front (up to throwRange + 1 )
     #   => go forward
@@ -534,14 +535,12 @@ def findBetterPlace(maxX, maxY, selfInfo, playerList, targetedMeAttackerList):
 #############
 
 def findBetterPlaceAndAttack(maxX, maxY, selfInfo, playerList):
-    # 1. if more than 1 player targeted 
+    # 1. if player targeted 
     #  => escape 
-    # 2. if only 1 player targeted
-    #  => face to attacker
-    # 3. if no one targeted
-    #  => Attack 
+    # 2. if no one targeted
+    #  => attackOrFindPlayer  
     targetedMeAttackerList = getTargetedMeAttacker(maxX, maxY, selfInfo, playerList)
-    for aUrl,aInfo in targetedMeAttackerList.items():
+    for aUrl,aInfo in targetedMeAttackerList.items()
         logger.info("Attacker found: "+aUrl)
 
     if selfInfo.wasHit:
