@@ -798,7 +798,9 @@ def faceToAttacker(maxX, maxY, selfInfo, playerList, targetedMeAttackerList):
 
 @app.route("/", methods=['GET'])
 def index():
+    #return "RANDOM!!!"
     return "Balancev1!"
+    
 
 @app.route("/", methods=['POST'])
 def main():
@@ -859,7 +861,8 @@ def main():
     #############
     # 2 - findBetterPlaceAndAttack()
     ###############
-    
+    #logger.info("RANDOM!!")
+    #return randomMoveOrAttack()
     return findBetterPlaceAndAttack(maxX, maxY, selfInfo, playerList)
 
 
