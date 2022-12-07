@@ -435,99 +435,6 @@ def escape(maxX, maxY, selfInfo, playerList, targetedMeAttackerList):
 
 
 
-def findBetterPlace(maxX, maxY, selfInfo, playerList, targetedMeAttackerList):
-    ###Logic=> Prevent targetted by multiple player, still intend to atack
-    #Assuming have more than one 
-
-    #1. If no player in front (up to throwRange + 1 )
-    #   => go forward
-    #2. else (i.e. player in front)
-    #  2.1 if no player on Left (up to throwRange + 1)
-    #      => go Left    
-    #  2.2 if no player on Right (up to throwRange +1 )
-    #       => go Right
-    #       else (i.e. no way go )
-    #       => random one step 
-    
-    nearbyCoordination = findNearbyCoordination(maxX, maxY, selfInfo.direction, selfInfo.x, selfInfo.y , throwRange+1)
-
-    #1. If no player or Boundary in front (up to throwRange + 1 )
-    #   => go forward
-    
-    frontHasPlayer = False
-    frontIsBoundary = False
-    frontCoordinationArr=nearbyCoordination['front']
-    if len(frontCoordinationArr) == throwRange+1: 
-        for f in frontCoordinationArr:
-            logger.info('Front=['+str(f.x)+','+str(f.y)+']')
-            for pUrl,pInfo in targetedMeAttackerList.items():
-                if f.x==pInfo.x and f.y==pInfo.y:
-                    frontHasPlayer = True
-                    logger.info("Player find in front:"+pUrl)
-                    break
-            if frontHasPlayer:
-                break
-    else:
-        logger.info("Boundary in front")
-        frontIsBoundary =True
-
-    if not frontHasPlayer and not frontIsBoundary:
-        logger.info("(findBetterPlace) move F")    
-        return 'F'
-
-    #2. else (i.e. player in front)
-    #  2.1 if no player and Boundary on Left (up to throwRange + 1)
-    #      => go Left    
-    LeftHasPlayer = False    
-    leftIsBoundary = False
-    leftCoordinationArr=nearbyCoordination['left']
-    if len(leftCoordinationArr) == throwRange+1: 
-        for l in leftCoordinationArr:
-            logger.info('Left=['+str(l.x)+','+str(l.y)+']')
-            for pUrl,pInfo in targetedMeAttackerList.items():
-                if l.x==pInfo.x and l.y==pInfo.y:
-                    LeftHasPlayer = True
-                    logger.info("Player find in left:"+pUrl)
-                    break
-            if LeftHasPlayer:
-                break
-    else:
-        logger.info("Boundary in left")
-        leftIsBoundary = True
-
-    if not LeftHasPlayer and not leftIsBoundary: 
-        logger.info("(findBetterPlace) move L")   
-        return 'L'
-    
-    #  2.2 if no player and Boundary on Right (up to throwRange +1 )
-    #       => go Right
-    
-    RightHasPlayer = False    
-    rightIsBoundary = False
-    rightCoordinationArr=nearbyCoordination['right']
-    if len(rightCoordinationArr) == throwRange+1: 
-        for r in rightCoordinationArr:
-            logger.info('Right=['+str(r.x)+','+str(r.y)+']')
-            for pUrl,pInfo in targetedMeAttackerList.items():
-                if r.x==pInfo.x and r.y==pInfo.y:
-                    RightHasPlayer = True
-                    logger.info("Player find in right:"+pUrl)
-                    break
-            if RightHasPlayer:
-                break
-    else:
-        logger.info("Boundary in right")
-        rightIsBoundary = True
-
-    if not RightHasPlayer and not rightIsBoundary:
-        logger.info("(findBetterPlace) move R")   
-        return 'R'
-
-    logger.info("(findBetterPlace) only can go rear, return 'R'")
-    return 'R'
-
-    #logger.info("(findBetterPlace) move random")
-    #return moves[random.randrange(len(moves))] 
 
 
 #############
@@ -548,19 +455,6 @@ def findBetterPlaceAndAttack(maxX, maxY, selfInfo, playerList):
     if selfInfo.wasHit:
         logger.info("(findBetterPlaceAndAttack) xxxx Was Hit by someone, escape!!!.")
         return escape(maxX, maxY, selfInfo, playerList, targetedMeAttackerList)
-
-
-    # 1. if more than 1 player targeted 
-    #if len(targetedMeAttackerList) > 1: 
-    #    logger.info("(findBetterPlaceAndAttack) xxxx Targeted by more than 1 player xxxx, find Better Place!!!.")
-    #    return findBetterPlace(maxX, maxY, selfInfo, playerList, targetedMeAttackerList)
-
-    # 13:30 prvenvt dead lock with attacher 
-    #if len(targetedMeAttackerList) == 1:
-    #    #face to attacker
-    #    logger.info("(findBetterPlaceAndAttack) Targeted by only 1 player , face to attacker!!! ")
-    #    return faceToAttacker(maxX, maxY, selfInfo, playerList, targetedMeAttackerList)
-
 
     logger.info("(findBetterPlaceAndAttack) NOT BEING TARGETED, GO ATTACK!!!!")
     return attackOrFindPlayer(maxX, maxY, selfInfo, playerList)
@@ -596,6 +490,7 @@ def attackOrFindPlayer(maxX, maxY, selfInfo, playerList):
     if len(frontAvailTargetList) > 0:
         logger.info("(attackOrFindPlayer) Avail target found , ATTACK!!")    
         return 'T'
+    
     #######################
     #2. Find highest score available Target  on exist L/R(within throw Range) or front /R 
     #       =>turn to that side
@@ -717,7 +612,7 @@ def attackOrFindPlayer(maxX, maxY, selfInfo, playerList):
 
     if ifMoveForwardNumOfAvailTarget==0 and ifMoveLeftNumOfAvailTarget==0 and ifMoveRightNumOfAvailTarget==0:
         logger.info("(attackOrFindPlayer) No avail target for next step, ramdom move ")
-        return randomMove()
+        return 'F'
 
     #if forward is Max 
     if ifMoveForwardNumOfAvailTarget >= ifMoveLeftNumOfAvailTarget and ifMoveForwardNumOfAvailTarget >= ifMoveRightNumOfAvailTarget:
