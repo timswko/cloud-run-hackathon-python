@@ -617,7 +617,7 @@ def attackOrFindPlayer(maxX, maxY, selfInfo, playerList):
         logger.info("(attackOrFindPlayer) No avail target for next step, ramdom move ")
         if nextFrontIsBoundary: 
             return 'R'
-        else
+        else:
             return 'F'
 
     #if forward is Max 
