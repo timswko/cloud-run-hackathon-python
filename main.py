@@ -508,6 +508,8 @@ def attackOrFindPlayer(maxX, maxY, selfInfo, playerList):
 
     if newCoordinationAndDirection.x >= maxX or newCoordinationAndDirection.y >= maxY:
         nextFrontIsBoundary = True
+    if len(ifMoveForwardNearbyCoordination['front'])==0:
+        nextFrontIsBoundary = True
 
     frontCoordinationArr=ifMoveForwardNearbyCoordination['front']
     for f in frontCoordinationArr:
@@ -614,10 +616,11 @@ def attackOrFindPlayer(maxX, maxY, selfInfo, playerList):
     logger.info("(attackOrFindPlayer) Avail Target , if Forward:"+str(ifMoveForwardNumOfAvailTarget)+", Left:"+str(ifMoveLeftNumOfAvailTarget)+", Right:"+str(ifMoveRightNumOfAvailTarget))
 
     if ifMoveForwardNumOfAvailTarget==0 and ifMoveLeftNumOfAvailTarget==0 and ifMoveRightNumOfAvailTarget==0:
-        logger.info("(attackOrFindPlayer) No avail target for next step, ramdom move ")
         if nextFrontIsBoundary: 
+            logger.info("(attackOrFindPlayer) Hit boundary , return R ")
             return 'R'
         else:
+            logger.info("(attackOrFindPlayer) No avail target for next step, return F ")
             return 'F'
 
     #if forward is Max 
