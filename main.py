@@ -352,15 +352,16 @@ def escape(maxX, maxY, selfInfo, playerList, targetedMeAttackerList):
     #       else (i.e. no way go )
     #       => random one step 
     
-    nearbyCoordination = findNearbyCoordination(maxX, maxY, selfInfo.direction, selfInfo.x, selfInfo.y , throwRange+1)
+    nearbyCoordination = findNearbyCoordination(maxX, maxY, selfInfo.direction, selfInfo.x, selfInfo.y , 1)
 
-    #1. If no player or Boundary in front (up to throwRange + 1 )
+    #1. If no player or Boundary in front (next 1 step)
     #   => go forward
     
     frontHasPlayer = False
     frontIsBoundary = False
     frontCoordinationArr=nearbyCoordination['front']
-    if len(frontCoordinationArr) == throwRange+1: 
+    #if len(frontCoordinationArr) == throwRange+1: 
+    if len(frontCoordinationArr) == 1: 
         for f in frontCoordinationArr:
             logger.info('Front=['+str(f.x)+','+str(f.y)+']')
             for pUrl,pInfo in playerList.items():
@@ -384,7 +385,7 @@ def escape(maxX, maxY, selfInfo, playerList, targetedMeAttackerList):
     LeftHasPlayer = False    
     leftIsBoundary = False
     leftCoordinationArr=nearbyCoordination['left']
-    if len(leftCoordinationArr) == throwRange+1: 
+    if len(leftCoordinationArr) == 1: 
         for l in leftCoordinationArr:
             logger.info('Left=['+str(l.x)+','+str(l.y)+']')
             for pUrl,pInfo in playerList.items():
@@ -399,7 +400,7 @@ def escape(maxX, maxY, selfInfo, playerList, targetedMeAttackerList):
         leftIsBoundary = True
 
     if not LeftHasPlayer and not leftIsBoundary: 
-        logger.info("(findBetterPlace) move L")   
+        logger.info("(escape) move L")   
         return 'L'
     
     #  2.2 if no player and Boundary on Right (up to throwRange +1 )
@@ -408,7 +409,7 @@ def escape(maxX, maxY, selfInfo, playerList, targetedMeAttackerList):
     RightHasPlayer = False    
     rightIsBoundary = False
     rightCoordinationArr=nearbyCoordination['right']
-    if len(rightCoordinationArr) == throwRange+1: 
+    if len(rightCoordinationArr) == 1: 
         for r in rightCoordinationArr:
             logger.info('Right=['+str(r.x)+','+str(r.y)+']')
             for pUrl,pInfo in playerList.items():
@@ -423,10 +424,10 @@ def escape(maxX, maxY, selfInfo, playerList, targetedMeAttackerList):
         rightIsBoundary = True
 
     if not RightHasPlayer and not rightIsBoundary:
-        logger.info("(findBetterPlace) move R")   
+        logger.info("(escape) move R")   
         return 'R'
 
-    logger.info("(findBetterPlace) only can go rear, return 'R'")
+    logger.info("(escape) only can go rear, return 'R'")
     return 'R'
 
     #logger.info("(findBetterPlace) move random")
@@ -550,9 +551,9 @@ def findBetterPlaceAndAttack(maxX, maxY, selfInfo, playerList):
 
 
     # 1. if more than 1 player targeted 
-    if len(targetedMeAttackerList) > 1: 
-        logger.info("(findBetterPlaceAndAttack) xxxx Targeted by more than 1 player xxxx, find Better Place!!!.")
-        return findBetterPlace(maxX, maxY, selfInfo, playerList, targetedMeAttackerList)
+    #if len(targetedMeAttackerList) > 1: 
+    #    logger.info("(findBetterPlaceAndAttack) xxxx Targeted by more than 1 player xxxx, find Better Place!!!.")
+    #    return findBetterPlace(maxX, maxY, selfInfo, playerList, targetedMeAttackerList)
 
     # 13:30 prvenvt dead lock with attacher 
     #if len(targetedMeAttackerList) == 1:
@@ -799,7 +800,7 @@ def faceToAttacker(maxX, maxY, selfInfo, playerList, targetedMeAttackerList):
 @app.route("/", methods=['GET'])
 def index():
     #return "RANDOM!!!"
-    return "Balance mod1!"
+    return "Balance mod1_1!"
     
 
 @app.route("/", methods=['POST'])
