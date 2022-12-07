@@ -498,13 +498,16 @@ def attackOrFindPlayer(maxX, maxY, selfInfo, playerList):
     ifMoveForwardAvailTargetList = {}
     ifMoveRightAvailTargetList = {}
     ifMoveLeftAvailTargetList = {}
-
+    nextFrontIsBoundary = False
 
     #
     # 2.1 Find Avail Target if move forward
     #
     newCoordinationAndDirection=newCoordinationAndDirectionAfterMove(maxX,maxY,selfInfo.direction, selfInfo.x, selfInfo.y, 'F')
     ifMoveForwardNearbyCoordination = findNearbyCoordination(maxX, maxY, newCoordinationAndDirection.direction, newCoordinationAndDirection.x, newCoordinationAndDirection.y, throwRange)
+
+    if newCoordinationAndDirection.x > maxX or newCoordinationAndDirection.y > maxY:
+        nextFrontIsBoundary = True
 
     frontCoordinationArr=ifMoveForwardNearbyCoordination['front']
     for f in frontCoordinationArr:
@@ -612,7 +615,10 @@ def attackOrFindPlayer(maxX, maxY, selfInfo, playerList):
 
     if ifMoveForwardNumOfAvailTarget==0 and ifMoveLeftNumOfAvailTarget==0 and ifMoveRightNumOfAvailTarget==0:
         logger.info("(attackOrFindPlayer) No avail target for next step, ramdom move ")
-        return 'F'
+        if nextFrontIsBoundary: 
+            return 'R'
+        else
+            return 'F'
 
     #if forward is Max 
     if ifMoveForwardNumOfAvailTarget >= ifMoveLeftNumOfAvailTarget and ifMoveForwardNumOfAvailTarget >= ifMoveRightNumOfAvailTarget:
