@@ -455,18 +455,13 @@ def findBetterPlaceAndAttack(maxX, maxY, selfInfo, playerList):
 
     #if wasHit 
     if selfInfo.wasHit:
-<<<<<<< Updated upstream
-        logger.info("(findBetterPlaceAndAttack) xxxx Was Hit by someone, escape!!!.")
-        return escape(maxX, maxY, selfInfo, playerList, targetedMeAttackerList)
-=======
         if len(targetedMeAttackerList) > 1:
             logger.info("(findBetterPlaceAndAttack) xxxx Was Hit more than one attacker, escape!!!.")
             return escape(maxX, maxY, selfInfo, playerList, targetedMeAttackerList)
         if len(targetedMeAttackerList) <= 1:
             logger.info("(findBetterPlaceAndAttack) Targeted by only 1 player , ATTACK or face to attacker!!! ")
             return AttackOrfaceToAttacker(maxX, maxY, selfInfo, playerList, targetedMeAttackerList)
-    
-        
+           
 
     # 1. if more than 1 player targeted 
     #if len(targetedMeAttackerList) > 1: 
@@ -478,8 +473,6 @@ def findBetterPlaceAndAttack(maxX, maxY, selfInfo, playerList):
     #    #face to attacker
     #    logger.info("(findBetterPlaceAndAttack) Targeted by only 1 player , face to attacker!!! ")
     #    return faceToAttacker(maxX, maxY, selfInfo, playerList, targetedMeAttackerList)
-
->>>>>>> Stashed changes
 
     logger.info("(findBetterPlaceAndAttack) NOT BEING TARGETED, GO ATTACK!!!!")
     return attackOrFindPlayer(maxX, maxY, selfInfo, playerList)
@@ -669,8 +662,6 @@ def attackOrFindPlayer(maxX, maxY, selfInfo, playerList):
         return 'R'
     
 
-<<<<<<< Updated upstream
-=======
 def AttackOrfaceToAttacker(maxX, maxY, selfInfo, playerList, targetedMeAttackerList):
     logger.info("(faceToAttacker) start")
     # 1. if attacker in front of me , shoot
@@ -726,7 +717,6 @@ def AttackOrfaceToAttacker(maxX, maxY, selfInfo, playerList, targetedMeAttackerL
 
     #Should not reach this point.
     return moves[random.randrange(len(moves))] 
->>>>>>> Stashed changes
 
 
 @app.route("/", methods=['GET'])
