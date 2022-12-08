@@ -451,10 +451,35 @@ def findBetterPlaceAndAttack(maxX, maxY, selfInfo, playerList):
     targetedMeAttackerList = getTargetedMeAttacker(maxX, maxY, selfInfo, playerList)
     for aUrl,aInfo in targetedMeAttackerList.items():
         logger.info("Attacker found: "+aUrl)
+    
 
+    #if wasHit 
     if selfInfo.wasHit:
+<<<<<<< Updated upstream
         logger.info("(findBetterPlaceAndAttack) xxxx Was Hit by someone, escape!!!.")
         return escape(maxX, maxY, selfInfo, playerList, targetedMeAttackerList)
+=======
+        if len(targetedMeAttackerList) > 1:
+            logger.info("(findBetterPlaceAndAttack) xxxx Was Hit more than one attacker, escape!!!.")
+            return escape(maxX, maxY, selfInfo, playerList, targetedMeAttackerList)
+        if len(targetedMeAttackerList) <= 1:
+            logger.info("(findBetterPlaceAndAttack) Targeted by only 1 player , ATTACK or face to attacker!!! ")
+            return AttackOrfaceToAttacker(maxX, maxY, selfInfo, playerList, targetedMeAttackerList)
+    
+        
+
+    # 1. if more than 1 player targeted 
+    #if len(targetedMeAttackerList) > 1: 
+    #    logger.info("(findBetterPlaceAndAttack) xxxx Targeted by more than 1 player xxxx, find Better Place!!!.")
+    #    return findBetterPlace(maxX, maxY, selfInfo, playerList, targetedMeAttackerList)
+
+    # 13:30 prvenvt dead lock with attacher 
+    #if len(targetedMeAttackerList) == 1:
+    #    #face to attacker
+    #    logger.info("(findBetterPlaceAndAttack) Targeted by only 1 player , face to attacker!!! ")
+    #    return faceToAttacker(maxX, maxY, selfInfo, playerList, targetedMeAttackerList)
+
+>>>>>>> Stashed changes
 
     logger.info("(findBetterPlaceAndAttack) NOT BEING TARGETED, GO ATTACK!!!!")
     return attackOrFindPlayer(maxX, maxY, selfInfo, playerList)
@@ -644,6 +669,64 @@ def attackOrFindPlayer(maxX, maxY, selfInfo, playerList):
         return 'R'
     
 
+<<<<<<< Updated upstream
+=======
+def AttackOrfaceToAttacker(maxX, maxY, selfInfo, playerList, targetedMeAttackerList):
+    logger.info("(faceToAttacker) start")
+    # 1. if attacker in front of me , shoot
+    # 2. if on left , go L
+    # 3. if on Rigt or rear , go R 
+
+    currentNearbyCoordination = findNearbyCoordination(maxX, maxY, selfInfo.direction, selfInfo.x, selfInfo.y, throwRange)
+    
+    frontCoordinationArr=currentNearbyCoordination['front']
+    for f in frontCoordinationArr:
+        logger.debug('(faceToAttacker) currentNearbyCoordination - Front=['+str(f.x)+','+str(f.y)+']')
+        for aUrl,aInfo in targetedMeAttackerList.items():
+            #logger.debug('(faceToAttacker) currentNearbyCoordination - aInfo=['+str(aInfo.x)+','+str(aInfo.y)+']')
+            if f.x==aInfo.x and f.y==aInfo.y:
+                # Found target, attack
+                logger.debug("(faceToAttacker) currentNearbyCoordination - Target find in front:"+aUrl)
+                logger.debug("(faceToAttacker) Find target in front, ATTACK  'F'")
+                return 'T'
+            
+
+    leftCoordinationArr=currentNearbyCoordination['left']
+    for l in leftCoordinationArr:
+        logger.debug('(faceToAttacker) currentNearbyCoordination - Left=['+str(l.x)+','+str(l.y)+']')
+        for aUrl,aInfo in targetedMeAttackerList.items():
+            #logger.debug('(faceToAttacker) currentNearbyCoordination - aInfo=['+str(aInfo.x)+','+str(aInfo.y)+']')
+            if l.x==aInfo.x and l.y==aInfo.y:
+                # Found target, attack
+                logger.debug("(faceToAttacker) currentNearbyCoordination - Target find in Left:"+aUrl)
+                logger.debug("(faceToAttacker) Find target on left side , turn  'L'")
+                return 'L'
+    
+    rightCoordinationArr=currentNearbyCoordination['right']
+    for r in rightCoordinationArr:
+        logger.debug('(faceToAttacker) currentNearbyCoordination - Right=['+str(r.x)+','+str(r.y)+']')
+        for aUrl,aInfo in targetedMeAttackerList.items():
+            #logger.debug('(faceToAttacker) currentNearbyCoordination - aInfo=['+str(aInfo.x)+','+str(aInfo.y)+']')
+            if r.x==aInfo.x and r.y==aInfo.y:
+                # Found target, attack
+                logger.debug("(faceToAttacker) currentNearbyCoordination - Target find in Right :"+aUrl)
+                logger.debug("(faceToAttacker) Find target on Right side , turn  'R'")
+                return 'R'
+
+    rearCoordinationArr=currentNearbyCoordination['rear']
+    for rear in rearCoordinationArr:
+        logger.debug('(faceToAttacker) currentNearbyCoordination - Rear=['+str(rear.x)+','+str(rear.y)+']')
+        for aUrl,aInfo in targetedMeAttackerList.items():
+            #logger.debug('(faceToAttacker) currentNearbyCoordination - aInfo=['+str(aInfo.x)+','+str(aInfo.y)+']')
+            if rear.x==aInfo.x and rear.y==aInfo.y:
+                # Found target, attack
+                logger.debug("(faceToAttacker) currentNearbyCoordination - Target find in Rear :"+aUrl)
+                logger.debug("(faceToAttacker) Find target on Back , turn  'R'")
+                return 'R'
+
+    #Should not reach this point.
+    return moves[random.randrange(len(moves))] 
+>>>>>>> Stashed changes
 
 
 @app.route("/", methods=['GET'])
