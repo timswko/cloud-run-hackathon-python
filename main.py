@@ -352,15 +352,16 @@ def escape(maxX, maxY, selfInfo, playerList, targetedMeAttackerList):
     #       else (i.e. no way go )
     #       => random one step 
     
-    nearbyCoordination = findNearbyCoordination(maxX, maxY, selfInfo.direction, selfInfo.x, selfInfo.y , throwRange+1)
+    nearbyCoordination = findNearbyCoordination(maxX, maxY, selfInfo.direction, selfInfo.x, selfInfo.y , 1)
 
-    #1. If no player or Boundary in front (up to throwRange + 1 )
+    #1. If no player or Boundary in front (next 1 step)
     #   => go forward
     
     frontHasPlayer = False
     frontIsBoundary = False
     frontCoordinationArr=nearbyCoordination['front']
-    if len(frontCoordinationArr) == throwRange+1: 
+    #if len(frontCoordinationArr) == throwRange+1: 
+    if len(frontCoordinationArr) == 1: 
         for f in frontCoordinationArr:
             logger.info('Front=['+str(f.x)+','+str(f.y)+']')
             for pUrl,pInfo in playerList.items():
@@ -384,7 +385,7 @@ def escape(maxX, maxY, selfInfo, playerList, targetedMeAttackerList):
     LeftHasPlayer = False    
     leftIsBoundary = False
     leftCoordinationArr=nearbyCoordination['left']
-    if len(leftCoordinationArr) == throwRange+1: 
+    if len(leftCoordinationArr) == 1: 
         for l in leftCoordinationArr:
             logger.info('Left=['+str(l.x)+','+str(l.y)+']')
             for pUrl,pInfo in playerList.items():
@@ -399,7 +400,7 @@ def escape(maxX, maxY, selfInfo, playerList, targetedMeAttackerList):
         leftIsBoundary = True
 
     if not LeftHasPlayer and not leftIsBoundary: 
-        logger.info("(findBetterPlace) move L")   
+        logger.info("(escape) move L")   
         return 'L'
     
     #  2.2 if no player and Boundary on Right (up to throwRange +1 )
@@ -408,7 +409,7 @@ def escape(maxX, maxY, selfInfo, playerList, targetedMeAttackerList):
     RightHasPlayer = False    
     rightIsBoundary = False
     rightCoordinationArr=nearbyCoordination['right']
-    if len(rightCoordinationArr) == throwRange+1: 
+    if len(rightCoordinationArr) == 1: 
         for r in rightCoordinationArr:
             logger.info('Right=['+str(r.x)+','+str(r.y)+']')
             for pUrl,pInfo in playerList.items():
@@ -423,10 +424,10 @@ def escape(maxX, maxY, selfInfo, playerList, targetedMeAttackerList):
         rightIsBoundary = True
 
     if not RightHasPlayer and not rightIsBoundary:
-        logger.info("(findBetterPlace) move R")   
+        logger.info("(escape) move R")   
         return 'R'
 
-    logger.info("(findBetterPlace) only can go rear, return 'R'")
+    logger.info("(escape) only can go rear, return 'R'")
     return 'R'
 
     #logger.info("(findBetterPlace) move random")
@@ -434,99 +435,6 @@ def escape(maxX, maxY, selfInfo, playerList, targetedMeAttackerList):
 
 
 
-def findBetterPlace(maxX, maxY, selfInfo, playerList, targetedMeAttackerList):
-    ###Logic=> Prevent targetted by multiple player, still intend to atack
-    #Assuming have more than one 
-
-    #1. If no player in front (up to throwRange + 1 )
-    #   => go forward
-    #2. else (i.e. player in front)
-    #  2.1 if no player on Left (up to throwRange + 1)
-    #      => go Left    
-    #  2.2 if no player on Right (up to throwRange +1 )
-    #       => go Right
-    #       else (i.e. no way go )
-    #       => random one step 
-    
-    nearbyCoordination = findNearbyCoordination(maxX, maxY, selfInfo.direction, selfInfo.x, selfInfo.y , throwRange+1)
-
-    #1. If no player or Boundary in front (up to throwRange + 1 )
-    #   => go forward
-    
-    frontHasPlayer = False
-    frontIsBoundary = False
-    frontCoordinationArr=nearbyCoordination['front']
-    if len(frontCoordinationArr) == throwRange+1: 
-        for f in frontCoordinationArr:
-            logger.info('Front=['+str(f.x)+','+str(f.y)+']')
-            for pUrl,pInfo in targetedMeAttackerList.items():
-                if f.x==pInfo.x and f.y==pInfo.y:
-                    frontHasPlayer = True
-                    logger.info("Player find in front:"+pUrl)
-                    break
-            if frontHasPlayer:
-                break
-    else:
-        logger.info("Boundary in front")
-        frontIsBoundary =True
-
-    if not frontHasPlayer and not frontIsBoundary:
-        logger.info("(findBetterPlace) move F")    
-        return 'F'
-
-    #2. else (i.e. player in front)
-    #  2.1 if no player and Boundary on Left (up to throwRange + 1)
-    #      => go Left    
-    LeftHasPlayer = False    
-    leftIsBoundary = False
-    leftCoordinationArr=nearbyCoordination['left']
-    if len(leftCoordinationArr) == throwRange+1: 
-        for l in leftCoordinationArr:
-            logger.info('Left=['+str(l.x)+','+str(l.y)+']')
-            for pUrl,pInfo in targetedMeAttackerList.items():
-                if l.x==pInfo.x and l.y==pInfo.y:
-                    LeftHasPlayer = True
-                    logger.info("Player find in left:"+pUrl)
-                    break
-            if LeftHasPlayer:
-                break
-    else:
-        logger.info("Boundary in left")
-        leftIsBoundary = True
-
-    if not LeftHasPlayer and not leftIsBoundary: 
-        logger.info("(findBetterPlace) move L")   
-        return 'L'
-    
-    #  2.2 if no player and Boundary on Right (up to throwRange +1 )
-    #       => go Right
-    
-    RightHasPlayer = False    
-    rightIsBoundary = False
-    rightCoordinationArr=nearbyCoordination['right']
-    if len(rightCoordinationArr) == throwRange+1: 
-        for r in rightCoordinationArr:
-            logger.info('Right=['+str(r.x)+','+str(r.y)+']')
-            for pUrl,pInfo in targetedMeAttackerList.items():
-                if r.x==pInfo.x and r.y==pInfo.y:
-                    RightHasPlayer = True
-                    logger.info("Player find in right:"+pUrl)
-                    break
-            if RightHasPlayer:
-                break
-    else:
-        logger.info("Boundary in right")
-        rightIsBoundary = True
-
-    if not RightHasPlayer and not rightIsBoundary:
-        logger.info("(findBetterPlace) move R")   
-        return 'R'
-
-    logger.info("(findBetterPlace) only can go rear, return 'R'")
-    return 'R'
-
-    #logger.info("(findBetterPlace) move random")
-    #return moves[random.randrange(len(moves))] 
 
 
 #############
@@ -547,19 +455,6 @@ def findBetterPlaceAndAttack(maxX, maxY, selfInfo, playerList):
     if selfInfo.wasHit:
         logger.info("(findBetterPlaceAndAttack) xxxx Was Hit by someone, escape!!!.")
         return escape(maxX, maxY, selfInfo, playerList, targetedMeAttackerList)
-
-
-    # 1. if more than 1 player targeted 
-    if len(targetedMeAttackerList) > 1: 
-        logger.info("(findBetterPlaceAndAttack) xxxx Targeted by more than 1 player xxxx, find Better Place!!!.")
-        return findBetterPlace(maxX, maxY, selfInfo, playerList, targetedMeAttackerList)
-
-    # 13:30 prvenvt dead lock with attacher 
-    #if len(targetedMeAttackerList) == 1:
-    #    #face to attacker
-    #    logger.info("(findBetterPlaceAndAttack) Targeted by only 1 player , face to attacker!!! ")
-    #    return faceToAttacker(maxX, maxY, selfInfo, playerList, targetedMeAttackerList)
-
 
     logger.info("(findBetterPlaceAndAttack) NOT BEING TARGETED, GO ATTACK!!!!")
     return attackOrFindPlayer(maxX, maxY, selfInfo, playerList)
@@ -595,6 +490,7 @@ def attackOrFindPlayer(maxX, maxY, selfInfo, playerList):
     if len(frontAvailTargetList) > 0:
         logger.info("(attackOrFindPlayer) Avail target found , ATTACK!!")    
         return 'T'
+    
     #######################
     #2. Find highest score available Target  on exist L/R(within throw Range) or front /R 
     #       =>turn to that side
@@ -602,13 +498,18 @@ def attackOrFindPlayer(maxX, maxY, selfInfo, playerList):
     ifMoveForwardAvailTargetList = {}
     ifMoveRightAvailTargetList = {}
     ifMoveLeftAvailTargetList = {}
-
+    nextFrontIsBoundary = False
 
     #
     # 2.1 Find Avail Target if move forward
     #
     newCoordinationAndDirection=newCoordinationAndDirectionAfterMove(maxX,maxY,selfInfo.direction, selfInfo.x, selfInfo.y, 'F')
     ifMoveForwardNearbyCoordination = findNearbyCoordination(maxX, maxY, newCoordinationAndDirection.direction, newCoordinationAndDirection.x, newCoordinationAndDirection.y, throwRange)
+
+    if newCoordinationAndDirection.x >= maxX or newCoordinationAndDirection.y >= maxY:
+        nextFrontIsBoundary = True
+    if len(ifMoveForwardNearbyCoordination['front'])==0:
+        nextFrontIsBoundary = True
 
     frontCoordinationArr=ifMoveForwardNearbyCoordination['front']
     for f in frontCoordinationArr:
@@ -715,8 +616,12 @@ def attackOrFindPlayer(maxX, maxY, selfInfo, playerList):
     logger.info("(attackOrFindPlayer) Avail Target , if Forward:"+str(ifMoveForwardNumOfAvailTarget)+", Left:"+str(ifMoveLeftNumOfAvailTarget)+", Right:"+str(ifMoveRightNumOfAvailTarget))
 
     if ifMoveForwardNumOfAvailTarget==0 and ifMoveLeftNumOfAvailTarget==0 and ifMoveRightNumOfAvailTarget==0:
-        logger.info("(attackOrFindPlayer) No avail target for next step, ramdom move ")
-        return randomMove()
+        if nextFrontIsBoundary: 
+            logger.info("(attackOrFindPlayer) Hit boundary , return R ")
+            return 'R'
+        else:
+            logger.info("(attackOrFindPlayer) No avail target for next step, return F ")
+            return 'F'
 
     #if forward is Max 
     if ifMoveForwardNumOfAvailTarget >= ifMoveLeftNumOfAvailTarget and ifMoveForwardNumOfAvailTarget >= ifMoveRightNumOfAvailTarget:
@@ -739,67 +644,12 @@ def attackOrFindPlayer(maxX, maxY, selfInfo, playerList):
         return 'R'
     
 
-def faceToAttacker(maxX, maxY, selfInfo, playerList, targetedMeAttackerList):
-    logger.info("(faceToAttacker) start")
-    # 1. if attacker in front of me , shoot
-    # 2. if on left , go L
-    # 3. if on Rigt or rear , go R 
-
-    currentNearbyCoordination = findNearbyCoordination(maxX, maxY, selfInfo.direction, selfInfo.x, selfInfo.y, throwRange)
-    
-    frontCoordinationArr=currentNearbyCoordination['front']
-    for f in frontCoordinationArr:
-        logger.debug('(faceToAttacker) currentNearbyCoordination - Front=['+str(f.x)+','+str(f.y)+']')
-        for aUrl,aInfo in targetedMeAttackerList.items():
-            #logger.debug('(faceToAttacker) currentNearbyCoordination - aInfo=['+str(aInfo.x)+','+str(aInfo.y)+']')
-            if f.x==aInfo.x and f.y==aInfo.y:
-                # Found target, attack
-                logger.debug("(faceToAttacker) currentNearbyCoordination - Target find in front:"+aUrl)
-                logger.debug("(faceToAttacker) Find target in front, ATTACK  'F'")
-                return 'T'
-            
-
-    leftCoordinationArr=currentNearbyCoordination['left']
-    for l in leftCoordinationArr:
-        logger.debug('(faceToAttacker) currentNearbyCoordination - Left=['+str(l.x)+','+str(l.y)+']')
-        for aUrl,aInfo in targetedMeAttackerList.items():
-            #logger.debug('(faceToAttacker) currentNearbyCoordination - aInfo=['+str(aInfo.x)+','+str(aInfo.y)+']')
-            if l.x==aInfo.x and l.y==aInfo.y:
-                # Found target, attack
-                logger.debug("(faceToAttacker) currentNearbyCoordination - Target find in Left:"+aUrl)
-                logger.debug("(faceToAttacker) Find target on left side , turn  'L'")
-                return 'L'
-    
-    rightCoordinationArr=currentNearbyCoordination['right']
-    for r in rightCoordinationArr:
-        logger.debug('(faceToAttacker) currentNearbyCoordination - Right=['+str(r.x)+','+str(r.y)+']')
-        for aUrl,aInfo in targetedMeAttackerList.items():
-            #logger.debug('(faceToAttacker) currentNearbyCoordination - aInfo=['+str(aInfo.x)+','+str(aInfo.y)+']')
-            if r.x==aInfo.x and r.y==aInfo.y:
-                # Found target, attack
-                logger.debug("(faceToAttacker) currentNearbyCoordination - Target find in Right :"+aUrl)
-                logger.debug("(faceToAttacker) Find target on Right side , turn  'R'")
-                return 'R'
-
-    rearCoordinationArr=currentNearbyCoordination['rear']
-    for rear in rearCoordinationArr:
-        logger.debug('(faceToAttacker) currentNearbyCoordination - Rear=['+str(rear.x)+','+str(rear.y)+']')
-        for aUrl,aInfo in targetedMeAttackerList.items():
-            #logger.debug('(faceToAttacker) currentNearbyCoordination - aInfo=['+str(aInfo.x)+','+str(aInfo.y)+']')
-            if rear.x==aInfo.x and rear.y==aInfo.y:
-                # Found target, attack
-                logger.debug("(faceToAttacker) currentNearbyCoordination - Target find in Rear :"+aUrl)
-                logger.debug("(faceToAttacker) Find target on Back , turn  'R'")
-                return 'R'
-
-    #Should not reach this point.
-    return moves[random.randrange(len(moves))] 
 
 
 @app.route("/", methods=['GET'])
 def index():
     #return "RANDOM!!!"
-    return "Balancev3!"
+    return "Balance mod1_1!"
     
 
 @app.route("/", methods=['POST'])
@@ -877,4 +727,3 @@ def main():
 if __name__ == "__main__":
   app.run(debug=False,host='0.0.0.0',port=int(os.environ.get('PORT', 8080)))
   
-
