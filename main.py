@@ -660,6 +660,8 @@ def main():
     selfURL = ""
     playerList = {}
 
+    return randomMoveOrAttack()
+    
     #############
     # 0 - get post content
     #############
